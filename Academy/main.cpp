@@ -6,6 +6,8 @@ using std::endl;
 
 #define delimiter "\n---------------------------------------------------------------\n"
 
+#define HUMAN_TAKE_PARAMETERS const std::string& last_name, const std::string& first_name, unsigned int age
+#define HUMAN_GIVE_PARAMETERS last_name, first_name, age
 
 class Human
 {
@@ -42,7 +44,7 @@ public:
 
 	// Constructors
 
-	Human(const std::string& last_name, const std::string& first_name, unsigned int age)
+	Human(HUMAN_TAKE_PARAMETERS)
 	{
 		set_last_name(last_name);
 		set_first_name(first_name);
@@ -57,7 +59,7 @@ public:
 
 	// Methods
 
-	void print()const
+	virtual void print()const
 	{
 		cout << last_name << " " << first_name << " " << age << " years\n";
 
@@ -65,6 +67,8 @@ public:
 
 };
 
+#define STUDENT_TAKE_PARAMETERS const std::string& specialty, const std::string& group, unsigned int year, double rating, double attendance
+#define STUDENT_GIVE_PARAMETERS specialty, group, year, rating, attendance
 
 class Student :public Human
 {
@@ -117,11 +121,7 @@ public:
 	}
 
 	// Constructors
-	Student
-	(
-		const std::string& last_name, const std::string& first_name, unsigned int age,
-		const std::string& specialty, const std::string& group, unsigned int year, double rating, double attendance
-	):Human(last_name, first_name, age)
+	Student (HUMAN_TAKE_PARAMETERS, STUDENT_TAKE_PARAMETERS):Human(HUMAN_GIVE_PARAMETERS)
 	{
 		set_specialty(specialty);
 		set_group(group);
@@ -255,12 +255,14 @@ public:
 };
 
 
+//#define INHERITANCE_CHECK
 
 
 void main()
 {
 	setlocale(LC_ALL, "");
 
+#ifdef INHERITANCE_CHECK
 	Human human("Montana", "Antonio", 25);
 	human.print();
 	cout << delimiter;
@@ -272,7 +274,25 @@ void main()
 	cout << delimiter;
 	Graduate graduate("Knight", "Thomas", 22, "Geography", "PV_111", 5, 98.53, 95.85, "Alps mountain", 5);
 	graduate.print();
+#endif // INHERITANCE_CHECK
 
+	//Generalisation:
+	Human* group[] =
+	{
+		new Student("Pinkman", "Jessie", 23, "Chemistry", "WW_220", 1, 90, 95),
+		new Teacher("White", "Walter", 50, "Chemistry", 25),
+		new Graduate("Schreder", "Hank", 25, "Criminalistics", "WW_220", 5, 95, 80, "Alps mountain", 5),
+		new Student("Vercetti", "Tomas", 30, "Theft", "Vice", 3, 90, 85),
+		new Teacher("Diaz", "Ricardo", 50, "Weapons distribution", 20),
+		new Teacher("Einstein", "Albert", 143, "Astronomy", 100)
+	};
+
+
+	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
+	{
+		group[i]->print();
+		cout << "--------------------------------------\n";
+	}
 
 
 
