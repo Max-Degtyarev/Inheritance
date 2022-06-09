@@ -139,10 +139,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Academy.cpp" />
+    <ClCompile Include="AcademyGraduate.cpp" />
+    <ClCompile Include="AcademyStudent.cpp" />
+    <ClCompile Include="AcademyTeacher.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Academy.h" />
+    <ClInclude Include="AcademyGraduate.h" />
+    <ClInclude Include="AcademyStudent.h" />
+    <ClInclude Include="AcademyTeacher.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
