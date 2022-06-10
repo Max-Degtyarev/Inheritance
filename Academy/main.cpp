@@ -256,6 +256,8 @@ public:
 
 
 //#define INHERITANCE_CHECK
+#define GENERALISATION_CHECK
+
 
 
 void main()
@@ -276,6 +278,9 @@ void main()
 	graduate.print();
 #endif // INHERITANCE_CHECK
 
+
+
+#ifdef GENERALISATION_CHECK
 	//Generalisation:
 	Human* group[] =
 	{
@@ -293,6 +298,18 @@ void main()
 		group[i]->print();
 		cout << "--------------------------------------\n";
 	}
+
+	cout << sizeof(group[0]);
+
+
+
+
+
+#endif // GENERALISATION_CHECK
+
+
+
+	
 
 	
 
