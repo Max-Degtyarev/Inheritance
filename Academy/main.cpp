@@ -298,8 +298,8 @@ void main()
 	{
 		//RTTI - Runtime Type Information
 		cout << typeid(*group[i]).name() << endl;
-		//group[i]->print();
-		cout << *group[i] << endl;
+		group[i]->print();
+		//cout << *group[i] << endl;
 		cout << "--------------------------------------\n";
 	}
 
