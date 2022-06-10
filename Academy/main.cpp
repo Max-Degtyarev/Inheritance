@@ -52,7 +52,7 @@ public:
 		cout << "HConstructor:\t" << this << endl;
 	}
 
-	~Human()
+	virtual ~Human()
 	{
 		cout << "HDestructor:\t" << this << endl;
 	}
@@ -282,6 +282,7 @@ void main()
 
 #ifdef GENERALISATION_CHECK
 	//Generalisation:
+	//Upcast - приведение к базовому типу
 	Human* group[] =
 	{
 		new Student("Pinkman", "Jessie", 23, "Chemistry", "WW_220", 1, 90, 95),
@@ -295,11 +296,20 @@ void main()
 
 	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
 	{
-		group[i]->print();
+		//RTTI - Runtime Type Information
+		cout << typeid(*group[i]).name() << endl;
+		//group[i]->print();
+		cout << *group[i] << endl;
 		cout << "--------------------------------------\n";
 	}
 
-	cout << sizeof(group[0]);
+	//cout << sizeof(group[0]);
+
+	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
+	{
+		delete group[i];
+
+	}
 
 
 
