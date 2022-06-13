@@ -59,13 +59,19 @@ public:
 
 	// Methods
 
-	virtual void print()const
+	virtual std::ostream& print(std::ostream& os /*= std::cout*/)const
 	{
-		cout << last_name << " " << first_name << " " << age << " years\n";
+		return os << last_name << " " << first_name << " " << age << " years\n";
 
 	}
 
 };
+
+std::ostream& operator<<(std::ostream& os, const Human& obj)
+{
+	return obj.print(os);
+}
+
 
 #define STUDENT_TAKE_PARAMETERS const std::string& specialty, const std::string& group, unsigned int year, double rating, double attendance
 #define STUDENT_GIVE_PARAMETERS specialty, group, year, rating, attendance
@@ -138,10 +144,10 @@ public:
 
 	// Methods
 
-	void print()const
+	std::ostream& print(std::ostream& os)const
 	{
-		Human::print();
-		cout << "speciality - " << specialty << endl << "group - " << group << endl << "year - " << year << endl <<
+		Human::print(os);
+		return os << "speciality - " << specialty << endl << "group - " << group << endl << "year - " << year << endl <<
 			"rating - " << rating << endl << "attendance - " << attendance << endl;
 	}
 
@@ -192,10 +198,10 @@ public:
 
 	// Methods
 
-	void print()const
+	std::ostream& print(std::ostream& os)const
 	{
-		Human::print();
-		cout << specialty << " " << experience << endl;
+		Human::print(os);
+		return os << specialty << " " << experience << endl;
 	}
 
 };
@@ -246,10 +252,10 @@ public:
 
 	// Methods
 
-	void print()const
+	std::ostream& print(std::ostream& os)const
 	{
-		Student::print();
-		cout << "theme - " << theme << endl << "mark - " << mark << endl;
+		//Student::print(os);
+		return Student::print(os) << "theme - " << theme << endl << "mark - " << mark << endl;
 	}
 	
 };
@@ -298,8 +304,8 @@ void main()
 	{
 		//RTTI - Runtime Type Information
 		cout << typeid(*group[i]).name() << endl;
-		group[i]->print();
-		//cout << *group[i] << endl;
+		//group[i]->print();
+		cout << *group[i] << endl;
 		cout << "--------------------------------------\n";
 	}
 
