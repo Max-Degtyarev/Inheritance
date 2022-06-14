@@ -1,5 +1,6 @@
 ﻿#include<iostream>
 #include<string>
+#include<fstream>
 using std::cout;
 using std::cin;
 using std::endl;
@@ -64,6 +65,14 @@ public:
 		return os << last_name << " " << first_name << " " << age << " years\n";
 
 	}
+	/*virtual std::ofstream& print(std::ofstream& of)const
+	{
+		return of << last_name;
+
+	}*/
+
+
+
 
 };
 
@@ -71,6 +80,12 @@ std::ostream& operator<<(std::ostream& os, const Human& obj)
 {
 	return obj.print(os);
 }
+
+//std::ofstream& operator<<(std::ofstream& of, const Human& obj)
+//{
+//	return obj.print(of);
+//}
+
 
 
 #define STUDENT_TAKE_PARAMETERS const std::string& specialty, const std::string& group, unsigned int year, double rating, double attendance
@@ -318,6 +333,13 @@ void main()
 	}
 
 
+	std::ofstream fout;
+	fout.open("File.txt"), std::ios_base::app;
+	fout << *group[0]; 
+	fout.close();
+	
+
+	//system("notepad File.txt");
 
 
 
