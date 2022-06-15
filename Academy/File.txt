@@ -1,1 +1,69 @@
-00B0EED0
+Pinkman Jessie 23 years
+
+--------------------------------------
+White Walter 50 years
+
+--------------------------------------
+Schreder Hank 25 years
+
+--------------------------------------
+Vercetti Tomas 30 years
+
+--------------------------------------
+Diaz Ricardo 50 years
+
+--------------------------------------
+Einstein Albert 143 years
+
+--------------------------------------
+Pinkman Jessie 23 years
+
+--------------------------------------
+White Walter 50 years
+
+--------------------------------------
+Schreder Hank 25 years
+
+--------------------------------------
+Vercetti Tomas 30 years
+
+--------------------------------------
+Diaz Ricardo 50 years
+
+--------------------------------------
+Einstein Albert 143 years
+
+--------------------------------------
+Pinkman Jessie 23 years
+speciality - Chemistry
+group - WW_220
+year - 1
+rating - 90
+attendance - 95
+
+--------------------------------------
+White Walter 50 years
+
+--------------------------------------
+Schreder Hank 25 years
+speciality - Criminalistics
+group - WW_220
+year - 5
+rating - 95
+attendance - 80
+
+--------------------------------------
+Vercetti Tomas 30 years
+speciality - Theft
+group - Vice
+year - 3
+rating - 90
+attendance - 85
+
+--------------------------------------
+Diaz Ricardo 50 years
+
+--------------------------------------
+Einstein Albert 143 years
+
+--------------------------------------

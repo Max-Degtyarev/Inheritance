@@ -65,11 +65,12 @@ public:
 		return os << last_name << " " << first_name << " " << age << " years\n";
 
 	}
-	/*virtual std::ofstream& print(std::ofstream& of)const
-	{
-		return of << last_name;
 
-	}*/
+	virtual std::ofstream& print(std::ofstream& of)const
+	{
+		of << last_name << " " << first_name << " " << age << " years\n";
+		return of;
+	}
 
 
 
@@ -81,10 +82,14 @@ std::ostream& operator<<(std::ostream& os, const Human& obj)
 	return obj.print(os);
 }
 
-//std::ofstream& operator<<(std::ofstream& of, const Human& obj)
-//{
-//	return obj.print(of);
-//}
+std::ofstream& operator<<(std::ofstream& of, const Human& obj)
+{
+	return obj.print(of);
+	//std::ofstream fout;
+
+	/*of << obj.get_last_name() << " " << obj.get_first_name() << " " << obj.get_age() << " years\n";
+	return of;*/
+}
 
 
 
@@ -165,8 +170,22 @@ public:
 		return os << "speciality - " << specialty << endl << "group - " << group << endl << "year - " << year << endl <<
 			"rating - " << rating << endl << "attendance - " << attendance << endl;
 	}
+	std::ofstream& print(std::ofstream& of)const
+	{
+		Human::print(of);
+		of << "speciality - " << specialty << endl << "group - " << group << endl << "year - " << year << endl <<
+			"rating - " << rating << endl << "attendance - " << attendance << endl;
+		return of;
+	}
+
+
+
+
 
 };
+
+
+
 
 
 class Teacher :public Human
@@ -315,6 +334,8 @@ void main()
 	};
 
 
+	std::ofstream fout;
+	fout.open("File.txt", std::ios_base::app);
 	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
 	{
 		//RTTI - Runtime Type Information
@@ -322,7 +343,13 @@ void main()
 		//group[i]->print();
 		cout << *group[i] << endl;
 		cout << "--------------------------------------\n";
+		fout << *group[i] << endl;;
+		fout << "--------------------------------------\n";
 	}
+	//if (typeid(*group[0]) == typeid(Student))fout << *dynamic_cast<Student*>(group[0]) << endl;
+	fout.close();
+	
+	system("notepad File.txt");
 
 	//cout << sizeof(group[0]);
 
@@ -333,11 +360,6 @@ void main()
 	}
 
 
-	std::ofstream fout;
-	fout.open("File.txt"), std::ios_base::app;
-	fout << *group[0]; 
-	fout.close();
-	
 
 	//system("notepad File.txt");
 
