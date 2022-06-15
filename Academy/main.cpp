@@ -1,6 +1,7 @@
 ﻿#include<iostream>
 #include<string>
 #include<fstream>
+#include<iomanip>
 using std::cout;
 using std::cin;
 using std::endl;
@@ -66,10 +67,14 @@ public:
 
 	}
 
-	virtual std::ofstream& print(std::ofstream& of)const
+	virtual std::ofstream& print(std::ofstream& ofs)const
 	{
-		of << last_name << " " << first_name << " " << age << " years\n";
-		return of;
+		ofs.width(20);
+		ofs << std::left;
+		ofs << last_name + " " + first_name << age;
+		return ofs;
+		/*ofs << last_name << " " << first_name << " " << age << " years\n";
+		return of;*/
 	}
 
 
@@ -82,9 +87,9 @@ std::ostream& operator<<(std::ostream& os, const Human& obj)
 	return obj.print(os);
 }
 
-std::ofstream& operator<<(std::ofstream& of, const Human& obj)
+std::ofstream& operator<<(std::ofstream& ofs, const Human& obj)
 {
-	return obj.print(of);
+	return obj.print(ofs);
 	//std::ofstream fout;
 
 	/*of << obj.get_last_name() << " " << obj.get_first_name() << " " << obj.get_age() << " years\n";
@@ -170,17 +175,22 @@ public:
 		return os << "speciality - " << specialty << endl << "group - " << group << endl << "year - " << year << endl <<
 			"rating - " << rating << endl << "attendance - " << attendance << endl;
 	}
-	std::ofstream& print(std::ofstream& of)const
+	std::ofstream& print(std::ofstream& ofs)const
 	{
-		Human::print(of);
-		of << "speciality - " << specialty << endl << "group - " << group << endl << "year - " << year << endl <<
-			"rating - " << rating << endl << "attendance - " << attendance << endl;
-		return of;
+		Human::print(ofs) << " ";
+		ofs.width(20);
+		ofs << std::left;
+		ofs << specialty;
+		ofs.width(8);
+		ofs << group << " " << year;
+		ofs.width(8);
+		ofs << std::right;
+		ofs << std::setprecision(2) << std::fixed;
+		ofs << rating << " " << attendance;
+		return ofs;
 	}
 
-
-
-
+	
 
 };
 
@@ -237,6 +247,13 @@ public:
 		Human::print(os);
 		return os << specialty << " " << experience << endl;
 	}
+	std::ofstream& print(std::ofstream& ofs)const
+	{
+		Human::print(ofs);
+		ofs << specialty << " " << experience;
+		return ofs;
+	}
+
 
 };
 
@@ -292,6 +309,16 @@ public:
 		return Student::print(os) << "theme - " << theme << endl << "mark - " << mark << endl;
 	}
 	
+	std::ofstream& print(std::ofstream& ofs)const
+	{
+		//Student::print(os);
+		Student::print(ofs);
+		ofs << theme << " " << mark;
+		return ofs;
+	}
+
+
+
 };
 
 
@@ -325,17 +352,17 @@ void main()
 	//Upcast - приведение к базовому типу
 	Human* group[] =
 	{
-		new Student("Pinkman", "Jessie", 23, "Chemistry", "WW_220", 1, 90, 95),
+		new Student("Pinkman", "Jessie", 23, "Chemistry", "WW_220", 1, 91.2, 95),
 		new Teacher("White", "Walter", 50, "Chemistry", 25),
-		new Graduate("Schreder", "Hank", 25, "Criminalistics", "WW_220", 5, 95, 80, "Alps mountain", 5),
+		new Graduate("Schreder", "Hank", 25, "Criminalistics", "WW_220", 5, 87.22, 80, "Alps mountain", 5),
 		new Student("Vercetti", "Tomas", 30, "Theft", "Vice", 3, 90, 85),
 		new Teacher("Diaz", "Ricardo", 50, "Weapons distribution", 20),
 		new Teacher("Einstein", "Albert", 143, "Astronomy", 100)
 	};
 
 
-	std::ofstream fout;
-	fout.open("File.txt", std::ios_base::app);
+	std::ofstream fout("Academy.txt");
+	cout << "--------------------------------------\n";
 	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
 	{
 		//RTTI - Runtime Type Information
@@ -344,24 +371,19 @@ void main()
 		cout << *group[i] << endl;
 		cout << "--------------------------------------\n";
 		fout << *group[i] << endl;;
-		fout << "--------------------------------------\n";
+		//fout << "--------------------------------------\n";
 	}
 	//if (typeid(*group[0]) == typeid(Student))fout << *dynamic_cast<Student*>(group[0]) << endl;
 	fout.close();
-	
-	system("notepad File.txt");
+	system("notepad Academy.txt");
 
 	//cout << sizeof(group[0]);
 
 	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
 	{
 		delete group[i];
-
 	}
 
-
-
-	//system("notepad File.txt");
 
 
 
