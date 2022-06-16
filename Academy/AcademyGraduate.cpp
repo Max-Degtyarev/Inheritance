@@ -51,3 +51,7 @@ void Graduate::print()const
 
 
 
+std::ostream& operator<<(std::ostream& os, const Graduate& obj)
+{
+	return os << (Student&)obj << " " << obj.get_theme() << " " << obj.get_mark();
+}

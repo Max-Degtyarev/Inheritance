@@ -71,12 +71,12 @@ void Student::print()const
 }
 
 
-//std::ostream& operator<<(std::ostream& os, const Human& obj)
-//{
-//	return os << (Human&)obj << obj.get_specialty() << " " << obj.get_group()
-//		<< " " << obj.get_year() << " " << obj.get_rating() << obj.get_attendance();
-//
-//}
+std::ostream& operator<<(std::ostream& os, const Student& obj)
+{
+	return os << (Human&)obj << obj.get_specialty() << " " << obj.get_group()
+		<< " " << obj.get_year() << " " << obj.get_rating() << " " << obj.get_attendance();
+
+}
 
 
 

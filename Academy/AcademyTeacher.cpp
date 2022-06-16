@@ -46,3 +46,10 @@ void Teacher::print()const
 	Human::print();
 	cout << specialty << " " << experience << endl;
 }
+
+
+std::ostream& operator<<(std::ostream& os, const Teacher& obj)
+{
+	return os << (Human&)obj << obj.get_specialty() << " " << obj.get_experience();
+
+}
