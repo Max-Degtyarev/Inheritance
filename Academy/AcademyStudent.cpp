@@ -71,7 +71,11 @@ void Student::print()const
 }
 
 
-
+//std::ostream& operator<<(std::ostream& os, Human& obj)
+//{
+//	return os << (Human&)obj << obj.
+//
+//}
 
 
 

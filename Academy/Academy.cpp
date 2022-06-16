@@ -54,5 +54,10 @@ void Human::print()const
 }
 
 
+std::ostream& operator<<(std::ostream& os, const Human& obj)
+{
+	return os << obj.get_last_name() << " " << obj.get_first_name() << " " << obj.get_age() << " years\n";
+
+}
 
 

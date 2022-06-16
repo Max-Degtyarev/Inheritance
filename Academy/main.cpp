@@ -41,9 +41,12 @@ void main()
 	};
 
 
+	cout << "--------------------------------------\n";
+
 	for (int i = 0; i < sizeof(group) / sizeof(group[0]); i++)
 	{
-		group[i]->print();
+		//group[i]->print();
+		cout << *group[i];
 		cout << "--------------------------------------\n";
 	}
 
