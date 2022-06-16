@@ -178,7 +178,7 @@ public:
 	std::ofstream& print(std::ofstream& ofs)const
 	{
 		Human::print(ofs) << " ";
-		ofs.width(20);
+		ofs.width(25);
 		ofs << std::left;
 		ofs << specialty;
 		ofs.width(8);
@@ -186,7 +186,7 @@ public:
 		ofs.width(8);
 		ofs << std::right;
 		ofs << std::setprecision(2) << std::fixed;
-		ofs << rating << " " << attendance;
+		ofs << rating << " " << attendance << " ";
 		return ofs;
 	}
 
@@ -249,9 +249,21 @@ public:
 	}
 	std::ofstream& print(std::ofstream& ofs)const
 	{
-		Human::print(ofs);
+		/*Human::print(ofs);
 		ofs << specialty << " " << experience;
+		return ofs;*/
+
+		Human::print(ofs) << " ";
+		ofs.width(20);
+		ofs << std::left;
+		ofs << specialty;
+		ofs.width(5);
+		ofs << std::left;
+		ofs << " " << experience;
 		return ofs;
+
+
+
 	}
 
 
@@ -311,10 +323,16 @@ public:
 	
 	std::ofstream& print(std::ofstream& ofs)const
 	{
-		//Student::print(os);
-		Student::print(ofs);
+		/*Student::print(ofs);
 		ofs << theme << " " << mark;
+		return ofs;*/
+
+		Student::print(ofs) << " ";
+		ofs.width(15);
+		ofs << std::left;
+		ofs << theme << mark;
 		return ofs;
+
 	}
 
 
