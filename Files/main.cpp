@@ -6,10 +6,13 @@ using std::cout;
 using std::endl;
 
 
+//#define WRITE_TO_FILE
+
 void main()
 {
 
 	setlocale(LC_ALL, "");
+#ifdef WRITE_TO_FILE
 	const int SIZE = 256;
 	char sz_filename[SIZE] = {}; //sz - String Zero
 	cout << "Введите имя файла: ";
@@ -28,7 +31,27 @@ void main()
 	system(sz_command);
 	// Потоки обязательно нужно закрывать, это также важно как удалять память
 	// Сколько раз был вызван метод open, столько же раз нужно вызвать метод close
+#endif // WRITE_TO_FILE
 
+	std::ifstream fin;
+	fin.open("File.txt");
+	if (fin.is_open())
+	{
+		const int n = 102400;
+		char buffer[n] = {};
+		while (!fin.eof()) // end of file
+		{
+			//fin >> buffer;
+			fin.getline(buffer, n);
+			cout << buffer << endl;
+		}
+	}
+	else
+	{
+		std::cerr << "Error: file not found" << endl;
+	}
+	fin.close();
+	system("notepad File.txt");
 
 
 

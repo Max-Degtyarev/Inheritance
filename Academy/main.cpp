@@ -71,10 +71,12 @@ public:
 	{
 		ofs.width(20);
 		ofs << std::left;
-		ofs << last_name + " " + first_name << age;
+		ofs << last_name + " " + first_name;
+		ofs.width(8);
+		ofs << std::right;
+		ofs << age;
 		return ofs;
-		/*ofs << last_name << " " << first_name << " " << age << " years\n";
-		return of;*/
+		
 	}
 
 
@@ -254,12 +256,12 @@ public:
 		return ofs;*/
 
 		Human::print(ofs) << " ";
-		ofs.width(20);
+		ofs.width(30);
 		ofs << std::left;
 		ofs << specialty;
 		ofs.width(5);
-		ofs << std::left;
-		ofs << " " << experience;
+		ofs << std::right;
+		ofs << experience;
 		return ofs;
 
 
@@ -323,10 +325,6 @@ public:
 	
 	std::ofstream& print(std::ofstream& ofs)const
 	{
-		/*Student::print(ofs);
-		ofs << theme << " " << mark;
-		return ofs;*/
-
 		Student::print(ofs) << " ";
 		ofs.width(15);
 		ofs << std::left;
@@ -375,7 +373,8 @@ void main()
 		new Graduate("Schreder", "Hank", 25, "Criminalistics", "WW_220", 5, 87.22, 80, "Alps mountain", 5),
 		new Student("Vercetti", "Tomas", 30, "Theft", "Vice", 3, 90, 85),
 		new Teacher("Diaz", "Ricardo", 50, "Weapons distribution", 20),
-		new Teacher("Einstein", "Albert", 143, "Astronomy", 100)
+		new Teacher("Einstein", "Albert", 143, "Astronomy", 100),
+		new Teacher("Montana", "Antonio", 25, "Criminalistics", 3)
 	};
 
 
