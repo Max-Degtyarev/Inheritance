@@ -7,6 +7,8 @@ using std::endl;
 
 
 //#define WRITE_TO_FILE
+#define FILE
+
 
 void main()
 {
@@ -33,6 +35,8 @@ void main()
 	// Сколько раз был вызван метод open, столько же раз нужно вызвать метод close
 #endif // WRITE_TO_FILE
 
+
+#ifdef FILE
 	std::ifstream fin;
 	fin.open("File.txt");
 	if (fin.is_open())
@@ -52,6 +56,8 @@ void main()
 	}
 	fin.close();
 	system("notepad File.txt");
+#endif // FILE
+
 
 
 

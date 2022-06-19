@@ -76,7 +76,13 @@ public:
 		ofs << std::right;
 		ofs << age;
 		return ofs;
-		
+	}
+	virtual std::ifstream& scan(std::ifstream ifs)
+	{
+		std::string buffer;
+		ifs >> last_name >> first_name >> age;
+		return ifs;
+
 	}
 
 
@@ -96,6 +102,11 @@ std::ofstream& operator<<(std::ofstream& ofs, const Human& obj)
 
 	/*of << obj.get_last_name() << " " << obj.get_first_name() << " " << obj.get_age() << " years\n";
 	return of;*/
+}
+
+std::istream& operator>>(std::istream& ifs, Human& obj)
+{
+	return obj.scan(ifs);
 }
 
 
@@ -192,6 +203,17 @@ public:
 		return ofs;
 	}
 
+	std::ifstream& scan(std::ifstream ifs)
+	{
+		Human::scan(ifs);
+		ifs >> specialty;
+		ifs >> group;
+		ifs >> year;
+		ifs >> rating;
+		ifs >> attendance;
+		return ifs;
+	}
+
 	
 
 };
@@ -263,16 +285,27 @@ public:
 		ofs << std::right;
 		ofs << experience;
 		return ofs;
-
-
-
 	}
+
+	std::ifstream& scan(std::ifstream& ifs)
+	{
+		Human::scan(ifs);
+		//ifs >> specialty;
+		const int n = 25;
+		char specialty[n] = {};
+		ifs.read(specialty, 25);
+		for (int i = n - 1; specialty[i] == ' '; i--)specialty[i] = 0;
+		set_specialty(specialty);
+		ifs >> experience;
+		return ifs;
+	}
+
 
 
 };
 
 
-class Graduate:public Student
+class Graduate :public Student
 {
 	std::string theme;
 	unsigned int mark;
@@ -308,7 +341,7 @@ public:
 		set_mark(mark);
 		cout << "GConstructor:\t" << this << endl;
 	}
-	
+
 	~Graduate()
 	{
 		cout << "GDestructor:\t" << this << endl;
@@ -322,7 +355,7 @@ public:
 		//Student::print(os);
 		return Student::print(os) << "theme - " << theme << endl << "mark - " << mark << endl;
 	}
-	
+
 	std::ofstream& print(std::ofstream& ofs)const
 	{
 		Student::print(ofs) << " ";
@@ -330,7 +363,15 @@ public:
 		ofs << std::left;
 		ofs << theme << mark;
 		return ofs;
+	}
 
+	std::ifstream& scan(std::ifstream& ifs)
+	{
+		//std::getline(ifs, this->theme);
+		Student::scan(ifs);
+		ifs >> theme;
+		ifs >> mark;
+		return ifs;
 	}
 
 
@@ -338,8 +379,63 @@ public:
 };
 
 
+Human* HumanFactory(const std::string type)
+{
+	if (type.find("class Student")!=std::string::npos)return new Student("", "", 0, "", "", 0, 0, 0);
+	if (type.find("class Graduate")!=std::string::npos)return new Graduate("", "", 0, "", "", 0, 0, 0, "", 0);
+	if (type.find("class Teacher")!=std::string::npos)return new Teacher("", "", 0, "", 0);
+
+
+}
+
+
+
+Human** load(const std::string& filename, int& n)
+{
+	
+	Human** group; // Массив
+	//int n = 0; // Размер массива
+	std::ifstream fin(filename);
+		
+	if (fin.is_open())
+	{
+		std::string buffer;
+		// Определяем размер массива
+		while (!fin.eof())
+		{
+			std::getline(fin, buffer);
+			n++;
+		}
+		n--;
+		// Выделяем память для участников группы (создаем массив)
+		group = new Human* [n] {};
+
+		// Возвращаемся в начало файла
+		fin.clear();
+		fin.seekg(0);
+		for (int i = 0; i < n; i++)
+		{
+			std::getline(fin, buffer, ':');
+			group[i] = HumanFactory(buffer);
+			fin >> *group[i];
+		}
+
+	}
+	else
+	{
+		std::cerr << "Error: file not found" << endl;
+		return nullptr;
+	}
+	fin.close();
+	return group;
+
+
+}
+
+
+
 //#define INHERITANCE_CHECK
-#define GENERALISATION_CHECK
+//#define WRITE_TO_FILE
 
 
 
@@ -363,7 +459,7 @@ void main()
 
 
 
-#ifdef GENERALISATION_CHECK
+#ifdef WRITE_TO_FILE
 	//Generalisation:
 	//Upcast - приведение к базовому типу
 	Human* group[] =
@@ -387,12 +483,13 @@ void main()
 		//group[i]->print();
 		cout << *group[i] << endl;
 		cout << "--------------------------------------\n";
+		fout << typeid(*group[i]).name() << ":\t";
 		fout << *group[i] << endl;;
 		//fout << "--------------------------------------\n";
 	}
 	//if (typeid(*group[0]) == typeid(Student))fout << *dynamic_cast<Student*>(group[0]) << endl;
 	fout.close();
-	system("notepad Academy.txt");
+	system("start notepad Academy.txt");
 
 	//cout << sizeof(group[0]);
 
@@ -401,10 +498,25 @@ void main()
 		delete group[i];
 	}
 
-
-
-
 #endif // GENERALISATION_CHECK
+
+
+	int n = 0;
+	Human** group = load("Acadamy.txt", n);
+
+	for (int i = 0; i < n; i++)
+	{
+		cout << *group[i] << endl;
+
+	}
+	
+	for (int i = 0; i < n; i++)
+	{
+		delete[] group[i];
+
+	}
+	delete[] group;
+
 
 
 
