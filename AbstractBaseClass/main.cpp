@@ -1,4 +1,4 @@
-#include<iostream>
+п»ї#include<iostream>
 #include<ctime>
 using std::cout;
 using std::endl;
@@ -19,7 +19,7 @@ using namespace std;
 //	int speed;
 //public:
 //	virtual void move() = 0;
-//	//Абстрактрый класс
+//	//РђР±СЃС‚СЂР°РєС‚СЂС‹Р№ РєР»Р°СЃСЃ
 //};
 //
 //class GroundVehicle :public Vehicle
@@ -33,9 +33,9 @@ using namespace std;
 //public:
 //	void move()
 //	{
-//		cout << "Машина едет на четырех колесах" << endl;
+//		cout << "РњР°С€РёРЅР° РµРґРµС‚ РЅР° С‡РµС‚С‹СЂРµС… РєРѕР»РµСЃР°С…" << endl;
 //	}
-//	// Конкретный класс
+//	// РљРѕРЅРєСЂРµС‚РЅС‹Р№ РєР»Р°СЃСЃ
 //};
 //
 //class Bike :public GroundVehicle
@@ -44,7 +44,7 @@ using namespace std;
 //public:
 //	void move()
 //	{
-//		cout << "Мотоцикл едет на двух колесах" << endl;
+//		cout << "РњРѕС‚РѕС†РёРєР» РµРґРµС‚ РЅР° РґРІСѓС… РєРѕР»РµСЃР°С…" << endl;
 //	}
 //};
 //
@@ -61,11 +61,11 @@ using namespace std;
 //public:
 //	void move()
 //	{
-//		cout << "Вертолет летит на винте" << endl;
+//		cout << "Р’РµСЂС‚РѕР»РµС‚ Р»РµС‚РёС‚ РЅР° РІРёРЅС‚Рµ" << endl;
 //	}
 //	void take_off()
 //	{
-//		cout << "Вертикальный взлет" << endl;
+//		cout << "Р’РµСЂС‚РёРєР°Р»СЊРЅС‹Р№ РІР·Р»РµС‚" << endl;
 //	}
 //
 //};
@@ -119,12 +119,12 @@ public:
 
 	void print()
 	{
-		cout << "\n---------------------------------------------\n" << endl << "Квадрат" << endl;
+		cout << "\n---------------------------------------------\n" << endl << "РљРІР°РґСЂР°С‚" << endl;
 		srand(time(NULL));
 		int side = rand() % 15 + 1;
-		cout << "Длина стороны = " << side << endl;
-		cout << "Площадь = " << area(side) << endl;
-		cout << "Периметр = " << perimetr(side) << endl;
+		cout << "Р”Р»РёРЅР° СЃС‚РѕСЂРѕРЅС‹ = " << side << endl;
+		cout << "РџР»РѕС‰Р°РґСЊ = " << area(side) << endl;
+		cout << "РџРµСЂРёРјРµС‚СЂ = " << perimetr(side) << endl;
 		setlocale(LC_ALL, "C");
 		
 		for (int i = 0; i <= side; i++)
@@ -176,12 +176,12 @@ public:
 
 	void print()
 	{
-		cout << "\n---------------------------------------------\n" << endl << "Прямоугольник" << endl;
+		cout << "\n---------------------------------------------\n" << endl << "РџСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРє" << endl;
 		srand(time(NULL));
 		int length = rand() % 20 + 1;
 		int width = rand() % 10 + 1;
-		cout << "Площадь = " << area(length, width) << endl;
-		cout << "Периметр = " << perimetr(length, width) << endl;
+		cout << "РџР»РѕС‰Р°РґСЊ = " << area(length, width) << endl;
+		cout << "РџРµСЂРёРјРµС‚СЂ = " << perimetr(length, width) << endl;
 		setlocale(LC_ALL, "C");
 
 		for (int i = 0; i <= width; i++)
@@ -234,8 +234,8 @@ public:
 		cout << "\n---------------------------------------------\n";
 		srand(time(NULL));
 		int area = rand() % 15 + 1;
-		cout << "Площадь = " << area << endl;
-		cout << "Радиус = " << radius(area) << endl;
+		cout << "РџР»РѕС‰Р°РґСЊ = " << area << endl;
+		cout << "Р Р°РґРёСѓСЃ = " << radius(area) << endl;
 		for (int i = 0; i < area; i++)
 		{
 			for (int j = i; j < area; j++)cout << "  ";
@@ -297,15 +297,15 @@ public:
 
 	void print()
 	{
-		cout << "\n---------------------------------------------\n" << "Треугольник" << endl;
+		cout << "\n---------------------------------------------\n" << "РўСЂРµСѓРіРѕР»СЊРЅРёРє" << endl;
 		srand(time(NULL));
 		int side = rand() % 15 + 1;
-		cout << "Высота = "; 
+		cout << "Р’С‹СЃРѕС‚Р° = "; 
 		set_height(side);
 		get_height();
 		cout << endl;
-		cout << "Площадь = " << area(side, height) << endl;
-		cout << "Периметр = " << perimetr(side) << endl;
+		cout << "РџР»РѕС‰Р°РґСЊ = " << area(side, height) << endl;
+		cout << "РџРµСЂРёРјРµС‚СЂ = " << perimetr(side) << endl;
 		for (int i = 0; i < side; i++)
 		{
 			for (int j = i; j < side; j++)cout << " ";
