@@ -95,6 +95,18 @@ class Square :public Quadrilateral
 
 public:
 
+	Square()
+	{
+		cout << "Square Constructor " << this << endl;
+	}
+	
+	~Square()
+	{
+		cout << "Square Destructor " << this << endl;
+	}
+
+
+
 	int area(int side)
 	{
 		return side * side;
@@ -126,15 +138,11 @@ public:
 				else if (i == 0 || i == side)cout << HORIZONTAL_LINE;
 				else if (j == 0 || j == side)cout << VERTICAL_LINE;
 				else cout << (i % 2 == j % 2 ? "  " : "  ");
-				
 			}
 			cout << endl;
-
 		}
 		setlocale(LC_ALL, "");
-
 	}
-
 };
 
 
@@ -145,18 +153,26 @@ class Rectangle :public Quadrilateral
 
 public:
 
+	Rectangle()
+	{
+		cout << "Rectangle Constructor " << this << endl;
+	}
+	
+	~Rectangle()
+	{
+		cout << "Rectangle Destructor " << this << endl;
+	}
+
 
 	int area(int length, int width)
 	{
 		return length * width;
-
 	}
 
 	int perimetr(int length, int width)
 	{
 		return (length + width) * 2;
 	}
-
 
 	void print()
 	{
@@ -179,16 +195,11 @@ public:
 				else if (i == 0 || i == width)cout << HORIZONTAL_LINE;
 				else if (j == 0 || j == length)cout << VERTICAL_LINE;
 				else cout << (i % 2 == j % 2 ? "  " : "  ");
-
 			}
 			cout << endl;
-
 		}
 		setlocale(LC_ALL, "");
-
-
 	}
-
 
 };
 
@@ -202,13 +213,21 @@ class Circle:public Shape
 
 public:
 
+	Circle()
+	{
+		cout << "Circle Constructor " << this << endl;
+	}
+	
+	~Circle()
+	{
+		cout << "Circle Destructor " << this << endl;
+	}
+
 	double radius(int area)
 	{
 		double p = 3.14;
 		return sqrt(area / p);
 	}
-
-
 
 	void print()
 	{
@@ -233,14 +252,8 @@ public:
 			for (int j = 0; j < (area - 1 - i) * 2; j++)cout << "  ";
 			cout << "*";
 			cout << endl;
-			
 		}
-
-
-
 	}
-
-
 };
 
 
@@ -251,6 +264,16 @@ class Triangle : public Shape
 
 public:
 
+	Triangle()
+	{
+		cout << "Triangle Constructor " << this << endl;
+	}
+
+	~Triangle()
+	{
+		cout << "Triangle Destructor " << this << endl;
+	}
+
 	int get_height()const
 	{
 		cout << height;
@@ -260,24 +283,17 @@ public:
 	void set_height(int side)
 	{
 		height = (side * sqrt(3)) / 2;
-
 	}
-
 
 	int perimetr(int side)
 	{
 		return side * 3;
-
 	}
 
 	int area(int side, int height)
 	{
 		return (side * height) / 2;
-
 	}
-	
-
-
 
 	void print()
 	{
@@ -292,24 +308,21 @@ public:
 		cout << "Периметр = " << perimetr(side) << endl;
 		for (int i = 0; i < side; i++)
 		{
-			for (int j = i; j < side; j++)cout << "  ";
-			cout << "*";
-			for (int j = 0; j < i * 2; j++)cout << "  ";
-			cout << "*";
+			for (int j = i; j < side; j++)cout << " ";
+			cout << "/";
+			for (int j = 0; j < i * 2; j++)cout << " ";
+			cout << "\\";
 			cout << endl;
-
 		}
-		for (int i = 0; i < side * 2; i++)
+		setlocale(LC_ALL, "C");
+		cout << " ";
+		for (int i = 0; i < side; i++)
 		{
-			cout << "* ";
-			
+			cout << HORIZONTAL_LINE;
 		}
-		cout << "*";
+		setlocale(LC_ALL, "");
 
 	}
-
-
-
 
 };
 
@@ -318,16 +331,19 @@ public:
 
 
 
-Shape* ShapeFactory()
-{
-	srand(time(NULL));
-	int a = rand() % 4 + 1;
-	if (a == 1)return new Square;
-	else if (a == 2)return new Circle;
-	else if (a == 3)return new Rectangle;
-	else if (a == 4)return new Triangle;
+//Shape* ShapeFactory(int buffer[])
+//{
+//	for (int i = 0; i < 4; i++)
+//	{
+//		if (buffer[i] == 1)return new Square;
+//		else if (buffer[i] == 2)return new Circle;
+//		else if (buffer[i] == 3)return new Rectangle;
+//		else if (buffer[i] == 4)return new Triangle;
+//
+//	}
+//
+//}
 
-}
 
 
 
@@ -347,31 +363,42 @@ void main()
 	apache.move();
 #endif // VEHICLE
 
-	
-	
-	Shape* group[4];
+		
 
+	int buffer[4] = {};
 
 	bool unique;
 	for (int i = 0; i < 4; i++)
 	{
 		do
 		{
-			group[i] = ShapeFactory();
+			srand(time(NULL));
+			buffer[i] = rand() % 4 + 1;;
 			unique = true;
 			for (int j = 0; j < i; j++)
 			{
-				if (typeid(*group[i]).name() == typeid(*group[j]).name())
+				if (buffer[i] == buffer[j])
 				{
 					unique = false;
 					break;
 				}
 			}
 		} while (!unique);
-
-
 	}
 
+	Shape* group[4];
+
+	for (int i = 0; i < 4; i++)
+	{
+		if (buffer[i] == 1)group[i] = new Square;
+		else if (buffer[i] == 2)group[i] = new Circle;
+		else if (buffer[i] == 3)group[i] = new Rectangle;
+		else if (buffer[i] == 4)group[i] = new Triangle;
+
+
+		//group[i] = ShapeFactory(buffer);
+
+	}
 
 	for (int i = 0; i < 4; i++)
 	{
@@ -400,14 +427,6 @@ void main()
 
 	//Rectangle g;
 	//g.print();
-
-
-
-
-
-
-
-
 
 
 
