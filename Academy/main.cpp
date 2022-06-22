@@ -77,9 +77,9 @@ public:
 		ofs << age;
 		return ofs;
 	}
-	virtual std::ifstream& scan(std::ifstream ifs)
+	virtual std::ifstream& scan(std::ifstream& ifs)
 	{
-		std::string buffer;
+		//std::string buffer;
 		ifs >> last_name >> first_name >> age;
 		return ifs;
 
@@ -104,7 +104,7 @@ std::ofstream& operator<<(std::ofstream& ofs, const Human& obj)
 	return of;*/
 }
 
-std::istream& operator>>(std::istream& ifs, Human& obj)
+std::ifstream& operator>>(std::ifstream& ifs, Human& obj)
 {
 	return obj.scan(ifs);
 }
@@ -165,7 +165,7 @@ public:
 	}
 
 	// Constructors
-	Student (HUMAN_TAKE_PARAMETERS, STUDENT_TAKE_PARAMETERS):Human(HUMAN_GIVE_PARAMETERS)
+	Student(HUMAN_TAKE_PARAMETERS, STUDENT_TAKE_PARAMETERS) :Human(HUMAN_GIVE_PARAMETERS)
 	{
 		set_specialty(specialty);
 		set_group(group);
@@ -203,7 +203,7 @@ public:
 		return ofs;
 	}
 
-	std::ifstream& scan(std::ifstream ifs)
+	std::ifstream& scan(std::ifstream& ifs)
 	{
 		Human::scan(ifs);
 		ifs >> specialty;
@@ -214,7 +214,7 @@ public:
 		return ifs;
 	}
 
-	
+
 
 };
 
@@ -369,7 +369,10 @@ public:
 	{
 		//std::getline(ifs, this->theme);
 		Student::scan(ifs);
-		ifs >> theme;
+		//ifs >> theme;
+		char theme[16] = {};
+		ifs.read(theme, 15);
+		set_theme(theme);
 		ifs >> mark;
 		return ifs;
 	}
@@ -381,9 +384,9 @@ public:
 
 Human* HumanFactory(const std::string type)
 {
-	if (type.find("class Student")!=std::string::npos)return new Student("", "", 0, "", "", 0, 0, 0);
-	if (type.find("class Graduate")!=std::string::npos)return new Graduate("", "", 0, "", "", 0, 0, 0, "", 0);
-	if (type.find("class Teacher")!=std::string::npos)return new Teacher("", "", 0, "", 0);
+	if (type.find("class Student") != std::string::npos)return new Student("", "", 0, "", "", 0, 0, 0);
+	if (type.find("class Graduate") != std::string::npos)return new Graduate("", "", 0, "", "", 0, 0, 0, "", 0);
+	if (type.find("class Teacher") != std::string::npos)return new Teacher("", "", 0, "", 0);
 
 
 }
@@ -392,11 +395,11 @@ Human* HumanFactory(const std::string type)
 
 Human** load(const std::string& filename, int& n)
 {
-	
+
 	Human** group; // Массив
 	//int n = 0; // Размер массива
 	std::ifstream fin(filename);
-		
+
 	if (fin.is_open())
 	{
 		std::string buffer;
@@ -408,7 +411,7 @@ Human** load(const std::string& filename, int& n)
 		}
 		n--;
 		// Выделяем память для участников группы (создаем массив)
-		group = new Human* [n] {};
+		group = new Human * [n] {};
 
 		// Возвращаемся в начало файла
 		fin.clear();
@@ -502,26 +505,19 @@ void main()
 
 
 	int n = 0;
-	Human** group = load("Acadamy.txt", n);
+	Human** group = load("Academy.txt", n);
 
 	for (int i = 0; i < n; i++)
 	{
 		cout << *group[i] << endl;
 
 	}
-	
+
 	for (int i = 0; i < n; i++)
 	{
 		delete[] group[i];
 
 	}
 	delete[] group;
-
-
-
-
-	
-
-	
 
 }
