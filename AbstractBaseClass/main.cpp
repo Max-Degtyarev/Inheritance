@@ -14,61 +14,64 @@ using namespace std;
 
 
 
-//class Vehicle
-//{
-//	int speed;
-//public:
-//	virtual void move() = 0;
-//	//Абстрактрый класс
-//};
-//
-//class GroundVehicle :public Vehicle
-//{
-//
-//};
-//
-//class Car :public GroundVehicle
-//{
-//
-//public:
-//	void move()
-//	{
-//		cout << "Машина едет на четырех колесах" << endl;
-//	}
-//	// Конкретный класс
-//};
-//
-//class Bike :public GroundVehicle
-//{
-//
-//public:
-//	void move()
-//	{
-//		cout << "Мотоцикл едет на двух колесах" << endl;
-//	}
-//};
-//
-//class AirVehicle :public Vehicle
-//{
-//	int height;
-//public:
-//	virtual void take_off() = 0;
-//
-//};
-//
-//class Helicopter :public AirVehicle
-//{
-//public:
-//	void move()
-//	{
-//		cout << "Вертолет летит на винте" << endl;
-//	}
-//	void take_off()
-//	{
-//		cout << "Вертикальный взлет" << endl;
-//	}
-//
-//};
+#ifdef VEHICLE
+class Vehicle
+{
+	int speed;
+public:
+	virtual void move() = 0;
+	//Абстрактрый класс
+};
+
+class GroundVehicle :public Vehicle
+{
+
+};
+
+class Car :public GroundVehicle
+{
+
+public:
+	void move()
+	{
+		cout << "Машина едет на четырех колесах" << endl;
+	}
+	// Конкретный класс
+};
+
+class Bike :public GroundVehicle
+{
+
+public:
+	void move()
+	{
+		cout << "Мотоцикл едет на двух колесах" << endl;
+	}
+};
+
+class AirVehicle :public Vehicle
+{
+	int height;
+public:
+	virtual void take_off() = 0;
+
+};
+
+class Helicopter :public AirVehicle
+{
+public:
+	void move()
+	{
+		cout << "Вертолет летит на винте" << endl;
+	}
+	void take_off()
+	{
+		cout << "Вертикальный взлет" << endl;
+	}
+
+};
+#endif // VEHICLE
+
 
 
 
@@ -77,14 +80,16 @@ class Shape
 
 public:
 	virtual void print() = 0;
-
+	virtual ~Shape()
+	{
+		cout << "ShapeDestructor:\t" << this << endl;
+	}
 };
 
 
 
 class Quadrilateral : public Shape
 {
-
 
 };
 
@@ -99,7 +104,7 @@ public:
 	{
 		cout << "Square Constructor " << this << endl;
 	}
-	
+
 	~Square()
 	{
 		cout << "Square Destructor " << this << endl;
@@ -111,7 +116,7 @@ public:
 	{
 		return side * side;
 	}
-	
+
 	int perimetr(int side)
 	{
 		return side * 4;
@@ -126,7 +131,7 @@ public:
 		cout << "Площадь = " << area(side) << endl;
 		cout << "Периметр = " << perimetr(side) << endl;
 		setlocale(LC_ALL, "C");
-		
+
 		for (int i = 0; i <= side; i++)
 		{
 			for (int j = 0; j <= side; j++)
@@ -157,7 +162,7 @@ public:
 	{
 		cout << "Rectangle Constructor " << this << endl;
 	}
-	
+
 	~Rectangle()
 	{
 		cout << "Rectangle Destructor " << this << endl;
@@ -207,7 +212,7 @@ public:
 
 
 
-class Circle:public Shape
+class Circle :public Shape
 {
 	int area;
 
@@ -217,7 +222,7 @@ public:
 	{
 		cout << "Circle Constructor " << this << endl;
 	}
-	
+
 	~Circle()
 	{
 		cout << "Circle Destructor " << this << endl;
@@ -243,7 +248,7 @@ public:
 			for (int j = 0; j < i * 2; j++)cout << "  ";
 			cout << "*";
 			cout << endl;
-			
+
 		}
 		for (int i = 0; i < area; i++)
 		{
@@ -300,7 +305,7 @@ public:
 		cout << "\n---------------------------------------------\n" << "Треугольник" << endl;
 		srand(time(NULL));
 		int side = rand() % 15 + 1;
-		cout << "Высота = "; 
+		cout << "Высота = ";
 		set_height(side);
 		get_height();
 		cout << endl;
@@ -329,25 +334,9 @@ public:
 
 
 
-
-
-//Shape* ShapeFactory(int buffer[])
-//{
-//	for (int i = 0; i < 4; i++)
-//	{
-//		if (buffer[i] == 1)return new Square;
-//		else if (buffer[i] == 2)return new Circle;
-//		else if (buffer[i] == 3)return new Rectangle;
-//		else if (buffer[i] == 4)return new Triangle;
-//
-//	}
-//
-//}
-
-
-
-
 //#define VEHICLE
+#define DZ
+
 
 void main()
 {
@@ -363,16 +352,17 @@ void main()
 	apache.move();
 #endif // VEHICLE
 
-		
 
+
+#ifdef DZ
 	int buffer[4] = {};
 
 	bool unique;
+	srand(time(NULL));
 	for (int i = 0; i < 4; i++)
 	{
 		do
 		{
-			srand(time(NULL));
 			buffer[i] = rand() % 4 + 1;;
 			unique = true;
 			for (int j = 0; j < i; j++)
@@ -411,22 +401,12 @@ void main()
 		delete group[i];
 	}
 
+#endif // DZ
 
 
 
 
-	//Square ty;
-	//ty.print();
 
-	//cout << "-----------------------------------\n";
-
-	//Circle a;
-	//a.print();
-
-	//cout << "-----------------------------------\n";
-
-	//Rectangle g;
-	//g.print();
 
 
 
