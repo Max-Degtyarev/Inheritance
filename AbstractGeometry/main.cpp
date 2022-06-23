@@ -2,6 +2,9 @@
 #include<Windows.h>
 using namespace std;
 
+#define delimiter "---------------------------------------------\n"
+
+
 // enam (Enumeration - перечисление) - это набор
 // целочисленных констант. Перечисление также является типом данных
 namespace Geometry
@@ -97,7 +100,7 @@ namespace Geometry
 			cout << typeid(*this).name() << endl;
 			cout << "Длина стороны квадрата: " << get_side() << endl;
 			Shape::info();
-
+			cout << delimiter;
 		}
 
 	};
@@ -148,10 +151,10 @@ namespace Geometry
 			HWND hwnd = GetConsoleWindow();
 			//2) Для того чтобы рисовать нужно создать контекст устройства
 			//HDC - Handler to Device Context
-			// Грубо говоря, HDC это то на чем мы будеи рисовать
+			// Грубо говоря, HDC это то на чем мы будем рисовать
 			HDC hdc = GetDC(hwnd);
 			//3) Создадим инструменты, которыми мы будем рисовать
-			HPEN hPen = CreatePen(PS_SOLID, 10, color); // карандаш рисует контур
+			HPEN hPen = CreatePen(PS_SOLID, 1, color); // карандаш рисует контур
 			// Для того чтобы применить заливку, нужна кисть:
 			HBRUSH hBrush = CreateSolidBrush(color);
 			//4) Создать карандаш недостаточно, его ещё нужно выбрать
@@ -172,8 +175,77 @@ namespace Geometry
 			cout << "Сторона А: " << side_a << endl;
 			cout << "Сторона B: " << side_b << endl;
 			Shape::info();
+			cout << delimiter;
 		}
 	};
+
+
+
+
+	class Circle :public Shape
+	{
+		int radius;
+
+	public:
+		int get_radius()const
+		{
+			return radius;
+		}
+		void set_radius(int radius)
+		{
+			if (radius <= 0)radius = 5;
+			this->radius = radius;
+		}
+
+		Circle(int radius, Color color) : Shape(color)
+		{
+			set_radius(radius);
+		}
+
+		~Circle() {}
+
+		double p = 3.14;
+
+		double get_area()const
+		{
+			return p * pow(radius, 2);
+		}
+
+		double get_perimeter()const
+		{
+			return 2 * radius * p;
+		}
+
+		void draw()const
+		{
+			HWND hwnd = GetConsoleWindow();
+			HDC hdc = GetDC(hwnd);
+			HPEN hPen = CreatePen(PS_SOLID, 1, color);
+			HBRUSH hBrush = CreateSolidBrush(color);
+			SelectObject(hdc, hPen);
+			SelectObject(hdc, hBrush);
+			::Ellipse(hdc, 410, 100, 310, 200);
+
+			DeleteObject(hBrush);
+			DeleteObject(hPen);
+			ReleaseDC(hwnd, hdc);
+
+		}
+
+		void info()const
+		{
+			cout << typeid(*this).name() << endl;
+			cout << "Радиус: " << radius << endl;
+			Shape::info();
+		}
+
+
+	};
+
+
+
+
+
 }
 
 
@@ -189,9 +261,12 @@ void main()
 	cout << "Периметр квадарат: " << square.get_perimeter() << endl;
 	square.draw();*/
 	square.info();
+	
 	Geometry::Rectangle rect(50, 30, Geometry::Color::green);
 	rect.info();
 
+	Geometry::Circle circle(15, Geometry::Color::red);
+	circle.info();
 
 
 
