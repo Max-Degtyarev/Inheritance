@@ -1,4 +1,6 @@
-﻿#include<iostream>
+﻿#define _USE_MATH_DEFINES
+#include<iostream>
+#include<math.h>
 #include<Windows.h>
 using namespace std;
 
@@ -15,13 +17,25 @@ namespace Geometry
 		red = 0x000000FF,
 		green = 0x0000FF00,
 		blue = 0x00FF0000,
+		yellow = 0x0000FFFF,
 
-		console_default = 0x07,
-		console_blue = 0x99,
+		console_default = 0x00000007,
+		console_blue = 0x000099,
 		console_green = 0xAA,
 		console_red = 0xCC,
 		console_yellow = 0xEE,
 		console_white = 0XFF
+
+	};
+
+	enum Defaults
+	{
+		min_start_x = 10,
+		max_start_x = 800,
+		min_start_y = 10,
+		max_start_y = 500,
+		min_line_width = 5,
+		max_line_width = 20,
 
 	};
 
@@ -30,13 +44,60 @@ namespace Geometry
 	{
 	protected:
 		Color color;
+		int start_x;
+		int start_y;
+		unsigned int line_width;
 
 	public:
 		Color get_color()const
 		{
 			return color;
 		}
-		Shape(Color color) :color(color) {}
+
+		int get_start_x()const
+		{
+			return start_x;
+		}
+
+		int get_start_y()const
+		{
+			return start_y;
+		}
+
+		unsigned int get_line_width()const
+		{
+			return line_width;
+		}
+
+		void set_start_x(int start_x)
+		{
+			if (start_x < Defaults::min_start_x)this->start_x = Defaults::min_start_x;
+			else if (start_x > Defaults::max_start_x)this->start_x = Defaults::max_start_x;
+			else this->start_x = start_x;
+		}
+
+		void set_start_y(int start_y)
+		{
+			if (start_y < Defaults::min_start_y)this->start_y = Defaults::min_start_y;
+			else if (start_y > Defaults::max_start_y)this->start_y = Defaults::max_start_y;
+			else this->start_y = start_y;
+		}
+
+		void set_line_width(unsigned int line_width)
+		{
+			if (line_width < Defaults::min_line_width)this->line_width = Defaults::min_line_width;
+			else if (line_width > Defaults::max_line_width)this->line_width = Defaults::max_line_width;
+			else this->line_width = line_width;
+		}
+
+
+		Shape(int start_x, int start_y, unsigned int line_width, Color color) :color(color)
+		{
+			set_start_x(start_x);
+			set_start_y(start_y);
+			set_line_width(line_width);
+		}
+
 		virtual ~Shape() {}
 
 		virtual double get_area()const = 0;
@@ -66,7 +127,8 @@ namespace Geometry
 			this->side = side;
 		}
 
-		Square(double side, Color color) :Shape(color)
+		Square(double side, int start_x, int start_y, unsigned int line_width, Color color)
+			:Shape(start_x, start_y, line_width, color)
 		{
 			set_side(side);
 		}
@@ -129,7 +191,8 @@ namespace Geometry
 			this->side_b = side_b;
 		}
 
-		Rectangle(double side_a, double side_b, Color color) : Shape(color)
+		Rectangle(double side_a, double side_b, int start_x, int start_y, unsigned int line_width, Color color)
+			: Shape(start_x, start_y, line_width, color)
 		{
 			set_side_a(side_a);
 			set_side_b(side_b);
@@ -154,7 +217,7 @@ namespace Geometry
 			// Грубо говоря, HDC это то на чем мы будем рисовать
 			HDC hdc = GetDC(hwnd);
 			//3) Создадим инструменты, которыми мы будем рисовать
-			HPEN hPen = CreatePen(PS_SOLID, 1, color); // карандаш рисует контур
+			HPEN hPen = CreatePen(PS_SOLID, line_width, color); // карандаш рисует контур
 			// Для того чтобы применить заливку, нужна кисть:
 			HBRUSH hBrush = CreateSolidBrush(color);
 			//4) Создать карандаш недостаточно, его ещё нужно выбрать
@@ -162,7 +225,7 @@ namespace Geometry
 			SelectObject(hdc, hPen);
 			SelectObject(hdc, hBrush);
 			//5) Рисуем прямоугольник:
-			::Rectangle(hdc, 100, 100, 300, 200);
+			::Rectangle(hdc, start_x, start_y, start_x + side_a, start_y + side_b);
 
 			DeleteObject(hBrush);
 			DeleteObject(hPen);
@@ -184,47 +247,47 @@ namespace Geometry
 
 	class Circle :public Shape
 	{
-		int radius;
+		double radius;
 
 	public:
-		int get_radius()const
+		double get_radius()const
 		{
 			return radius;
 		}
-		void set_radius(int radius)
+		void set_radius(double radius)
 		{
-			if (radius <= 0)radius = 5;
-			this->radius = radius;
+			if (radius >= 10 && radius <= 500)this->radius = radius;
+			else if (radius < 10)this->radius = 10;
+			else this->radius = 500;
 		}
 
-		Circle(int radius, Color color) : Shape(color)
+		Circle(double radius, int start_x, int start_y, unsigned int line_width, Color color)
+			: Shape(start_x, start_y, line_width, color)
 		{
 			set_radius(radius);
 		}
 
 		~Circle() {}
 
-		double p = 3.14;
-
 		double get_area()const
 		{
-			return p * pow(radius, 2);
+			return M_PI * pow(radius, 2);
 		}
 
 		double get_perimeter()const
 		{
-			return 2 * radius * p;
+			return 2 * radius * M_PI;
 		}
 
 		void draw()const
 		{
 			HWND hwnd = GetConsoleWindow();
 			HDC hdc = GetDC(hwnd);
-			HPEN hPen = CreatePen(PS_SOLID, 1, color);
+			HPEN hPen = CreatePen(PS_SOLID, line_width, color);
 			HBRUSH hBrush = CreateSolidBrush(color);
 			SelectObject(hdc, hPen);
 			SelectObject(hdc, hBrush);
-			::Ellipse(hdc, 410, 100, 310, 200);
+			::Ellipse(hdc, start_x, start_y, start_x + radius * 2, start_y + radius * 2);
 
 			DeleteObject(hBrush);
 			DeleteObject(hPen);
@@ -238,11 +301,7 @@ namespace Geometry
 			cout << "Радиус: " << radius << endl;
 			Shape::info();
 		}
-
-
 	};
-
-
 
 
 
@@ -255,17 +314,17 @@ void main()
 {
 	setlocale(LC_ALL, "");
 	//Shape shape(Color::console_blue);
-	Geometry::Square square(5, Geometry::Color::console_red);
+	Geometry::Square square(5, 50, 10, 5, Geometry::Color::console_red);
 	/*cout << "Длина стороны квадрата: " << square.get_side() << endl;
 	cout << "Площадь квадрата: " << square.get_area() << endl;
 	cout << "Периметр квадарат: " << square.get_perimeter() << endl;
 	square.draw();*/
 	square.info();
 	
-	Geometry::Rectangle rect(50, 30, Geometry::Color::green);
+	Geometry::Rectangle rect(500, 300, 500, 100, 5, Geometry::Color::green);
 	rect.info();
 
-	Geometry::Circle circle(15, Geometry::Color::red);
+	Geometry::Circle circle(150, 850, 250, 15, Geometry::Color::yellow);
 	circle.info();
 
 
