@@ -18,6 +18,8 @@ namespace Geometry
 		green = 0x0000FF00,
 		blue = 0x00FF0000,
 		yellow = 0x0000FFFF,
+		purple = 0x00BB00BB,
+		light_blue = 0x00BBBB00,
 
 		console_default = 0x00000007,
 		console_blue = 0x000099,
@@ -31,10 +33,10 @@ namespace Geometry
 	enum Defaults
 	{
 		min_start_x = 10,
-		max_start_x = 800,
+		max_start_x = 1500,
 		min_start_y = 10,
-		max_start_y = 500,
-		min_line_width = 5,
+		max_start_y = 2000,
+		min_line_width = 4,
 		max_line_width = 20,
 
 	};
@@ -300,12 +302,352 @@ namespace Geometry
 			cout << typeid(*this).name() << endl;
 			cout << "Радиус: " << radius << endl;
 			Shape::info();
+			cout << delimiter;
 		}
 	};
 
 
 
+	class Triangle :public Shape
+	{
+
+	protected:
+
+		double side_a, side_b, side_c;
+		
+		Triangle(int start_x, int start_y, unsigned int line_width, Color color)
+			: Shape(start_x, start_y, line_width, color) {}
+
+	};
+
+
+	class Equilateral_triangle :public Triangle
+	{
+
+		double side;
+
+
+	public:
+
+		double get_side()const
+		{
+			return side;
+		}
+		
+		void set_side(double side)
+		{
+			if (side >= 20 && side <= 300)this->side = side;
+			else if (side < 20)this->side = 20;
+			else this->side = 300;
+		}
+		
+
+		Equilateral_triangle(double side, int start_x, int start_y, unsigned int line_width, Color color)
+			: Triangle(start_x, start_y, line_width, color)
+		{
+			set_side(side);
+			
+		}
+
+		double get_area()const
+		{
+			double pp = (side + side + side) / 2;
+			return sqrt(pp * (pp - side) * (pp - side) * (pp - side));
+
+		}
+
+		double get_perimeter()const
+		{
+			return side + side + side;
+		}
+
+
+		void draw()const
+		{
+			HWND hwnd = GetConsoleWindow();
+			HDC hdc = GetDC(hwnd);
+			HPEN hPen = CreatePen(PS_SOLID, line_width, green);
+			HBRUSH hBrush = CreateSolidBrush(color);
+			SelectObject(hdc, hPen);
+			SelectObject(hdc, hBrush);
+			POINT points[3] = { {start_x, start_y}, {start_x - side, start_y + side}, {start_x + side, start_y + side} };
+			::Polygon(hdc, points, 3);
+
+			DeleteObject(hBrush);
+			DeleteObject(hPen);
+			ReleaseDC(hwnd, hdc);
+
+		}
+
+
+		void info()const
+		{
+			cout << typeid(*this).name() << endl;
+			cout << "Сторона треугольника: " << side << endl;
+			Shape::info();
+			cout << delimiter;
+		}
+
+	};
+
+	class Right_triangle :public Triangle
+	{
+		int leg_1;
+		int leg_2;
+
+
+	public:
+
+		int get_leg_1()const
+		{
+			return leg_1;
+		}
+		int get_leg_2()const
+		{
+			return leg_2;
+		}
+
+		void set_leg_1(int leg_1)
+		{
+			if (leg_1 >= 20 && leg_1 <= 150)this->leg_1 = leg_1;
+			else if (leg_1 < 20)this->leg_1 = 20;
+			else this->leg_1 = 150;
+		}
+		void set_leg_2(int leg_2)
+		{
+			if (leg_2 >= 10 && leg_2 <= 100)this->leg_2 = leg_2;
+			else if (leg_2 < 10)this->leg_2 = 10;
+			else this->leg_2 = 100;
+		}
+
+
+		Right_triangle(int leg_1, int leg_2, int start_x, int start_y, unsigned int line_width, Color color)
+			: Triangle(start_x, start_y, line_width, color)
+		{
+			set_leg_1(leg_1);
+			set_leg_2(leg_2);
+
+		}
+
+
+		double get_area()const
+		{
+			int hypotenuse = sqrt((leg_1 * leg_1) + (leg_2 * leg_2)); // Вопрос
+			double pp = (leg_1 + leg_2 + hypotenuse) / 2;
+			return sqrt(pp * (pp - leg_1) * (pp - leg_2) * (pp - hypotenuse)); 
+
+		}
+
+		double get_perimeter()const
+		{
+			int hypotenuse = sqrt((leg_1 * leg_1) + (leg_2 * leg_2));
+			return leg_1 + leg_2 + hypotenuse;
+		}
+
+
+		void draw()const
+		{
+			HWND hwnd = GetConsoleWindow();
+			HDC hdc = GetDC(hwnd);
+			HPEN hPen = CreatePen(PS_SOLID, line_width, purple);
+			HBRUSH hBrush = CreateSolidBrush(color);
+			SelectObject(hdc, hPen);
+			SelectObject(hdc, hBrush);
+			POINT points[3] = { {start_x, start_y}, {start_x, start_y + leg_1}, {start_x + leg_2, start_y + leg_1} };
+			::Polygon(hdc, points, 3);
+
+			DeleteObject(hBrush);
+			DeleteObject(hPen);
+			ReleaseDC(hwnd, hdc);
+
+		}
+
+
+		void info()const
+		{
+			cout << typeid(*this).name() << endl;
+			cout << "Сторона треугольника 1: " << leg_1 << endl;
+			cout << "Сторона треугольника 2: " << leg_2 << endl;
+			Shape::info();
+			cout << delimiter;
+		}
+
+	};
+	
+	
+	
+	class Obtuse_triangle : Triangle
+	{
+		int leg_1;
+		int leg_2;
+
+
+	public:
+
+		int get_leg_1()const
+		{
+			return leg_1;
+		}
+		int get_leg_2()const
+		{
+			return leg_2;
+		}
+
+		void set_leg_1(int leg_1)
+		{
+			if (leg_1 >= 20 && leg_1 <= 100)this->leg_1 = leg_1;
+			else if (leg_1 < 20)this->leg_1 = 20;
+			else this->leg_1 = 100;
+		}
+		void set_leg_2(int leg_2)
+		{
+			if (leg_2 < leg_1)this->leg_2 = leg_1 + 50;
+			else if (leg_2 >= 10 && leg_2 <= 150)this->leg_2 = leg_2;
+			else if (leg_2 < 10)this->leg_2 = 10;
+			else this->leg_2 = 150;
+		}
+
+
+		Obtuse_triangle(int leg_1, int leg_2, int start_x, int start_y, unsigned int line_width, Color color)
+			: Triangle(start_x, start_y, line_width, color)
+		{
+			set_leg_1(leg_1);
+			set_leg_2(leg_2);
+
+		}
+
+
+		double get_area()const
+		{
+			int hypotenuse = sqrt((leg_1 * leg_1) + (leg_2 * leg_2)); // Вопрос
+			double pp = (leg_1 + leg_2 + hypotenuse) / 2;
+			return sqrt(pp * (pp - leg_1) * (pp - leg_2) * (pp - hypotenuse));
+
+		}
+
+		double get_perimeter()const
+		{
+			int hypotenuse = sqrt((leg_1 * leg_1) + (leg_2 * leg_2));
+			return leg_1 + leg_2 + hypotenuse;
+		}
+
+
+		void draw()const
+		{
+			HWND hwnd = GetConsoleWindow();
+			HDC hdc = GetDC(hwnd);
+			HPEN hPen = CreatePen(PS_SOLID, line_width, yellow);
+			HBRUSH hBrush = CreateSolidBrush(color);
+			SelectObject(hdc, hPen);
+			SelectObject(hdc, hBrush);
+			POINT points[3] = { {start_x, start_y}, {start_x + leg_1, start_y + leg_1}, {start_x + leg_1 + leg_2, start_y + leg_1} };
+			::Polygon(hdc, points, 3);
+
+			DeleteObject(hBrush);
+			DeleteObject(hPen);
+			ReleaseDC(hwnd, hdc);
+
+		}
+
+
+		void info()const
+		{
+			cout << typeid(*this).name() << endl;
+			cout << "Сторона треугольника 1: " << leg_1 << endl;
+			cout << "Сторона треугольника 2: " << leg_2 << endl;
+			Shape::info();
+			cout << delimiter;
+		}
+			
+	
+	};
+
+
+	class Isoscelec_triangle :public Triangle
+	{
+		int side;
+		int ground;
+
+
+	public:
+
+		int get_side()const
+		{
+			return side;
+		}
+		int get_ground()const
+		{
+			return ground;
+		}
+
+		void set_side(int side)
+		{
+			if (side >= 20 && side <= 400)this->side = side;
+			else if (side < 20)this->side = 20;
+			else this->side = 150;
+		}
+		void set_ground(int ground)
+		{
+			if (ground >= 10 && ground <= 200)this->ground = ground;
+			else if (ground < 10)this->ground = 10;
+			else this->ground = 100;
+		}
+
+
+		Isoscelec_triangle(int side, int ground, int start_x, int start_y, unsigned int line_width, Color color)
+			: Triangle(start_x, start_y, line_width, color)
+		{
+			set_side(side);
+			set_ground(ground);
+
+		}
+
+
+		double get_area()const
+		{
+			return (ground / 4) * sqrt((4 * (side * side)) - (ground * ground));
+
+		}
+
+		double get_perimeter()const
+		{
+			return 2 * side + ground;
+		}
+
+
+		void draw()const
+		{
+			HWND hwnd = GetConsoleWindow();
+			HDC hdc = GetDC(hwnd);
+			HPEN hPen = CreatePen(PS_SOLID, line_width, green);
+			HBRUSH hBrush = CreateSolidBrush(color);
+			SelectObject(hdc, hPen);
+			SelectObject(hdc, hBrush);
+			POINT points[3] = { {start_x, start_y}, {start_x - ground / 2, start_y + side}, {start_x + ground / 2, start_y + side} };		::Polygon(hdc, points, 3);
+
+			DeleteObject(hBrush);
+			DeleteObject(hPen);
+			ReleaseDC(hwnd, hdc);
+
+		}
+
+
+		void info()const
+		{
+			cout << typeid(*this).name() << endl;
+			cout << "Сторона треугольника : " << side << endl;
+			cout << "Основание треугольника : " << ground << endl;
+			Shape::info();
+			cout << delimiter;
+		}
+		
+	};
+
 }
+
+
+
+
 
 
 
@@ -321,13 +663,26 @@ void main()
 	square.draw();*/
 	square.info();
 	
-	Geometry::Rectangle rect(500, 300, 500, 100, 5, Geometry::Color::green);
+	Geometry::Rectangle rect(150, 100, 500, 100, 5, Geometry::Color::green);
 	rect.info();
 
-	Geometry::Circle circle(150, 850, 250, 15, Geometry::Color::yellow);
+	Geometry::Circle circle(50, 800, 100, 15, Geometry::Color::yellow);
 	circle.info();
 
 
+	Geometry::Equilateral_triangle triangle(100, 600, 480, 1, Geometry::Color::purple);
+	triangle.info();
+	
+	Geometry::Right_triangle triangle_2(130, 100, 600, 600, 1, Geometry::Color::light_blue);
+	triangle_2.info();
+
+	Geometry::Obtuse_triangle triangle_3(90, 80, 600, 750, 1, Geometry::Color::green);
+	triangle_3.info();
+
+	Geometry::Isoscelec_triangle triangle_4(400, 100, 1000, 500, 3, Geometry::Color::blue);
+	triangle_4.info();
+	
 
 
+		
 }
